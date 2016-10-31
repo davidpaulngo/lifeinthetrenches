@@ -39,12 +39,10 @@
 function ConvertTo-AzureRmParametersJSON {
 
     Param (
-        # Parameter help description
         [Parameter(Mandatory=$true, ParameterSetName="CSVFile", ValueFromPipeline=$true)]
         [ValidateScript({Test-Path $_})]
         [string] $CSVFile,
 
-        # Parameter help description
         [Parameter(ParameterSetName="CSVFile")]
         [string] $OutputPrefix = "item-"
     )
@@ -59,12 +57,19 @@ function ConvertTo-AzureRmParametersJSON {
     $outputFiles = @()
     $count = 0
     if($sourceObj) {
+        # Evaluate each line item in the CSV
         foreach($item in $sourceObj) {
+
+            # Create new PowerShell object to store JSON data
             $newObj = New-Object System.Object
+
+            # Add standard properties of the parameter file to the object
             $newObj | Add-Member -Type NoteProperty -Name "`$schema" -Value `
                 "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#"
             $newObj | Add-Member -Type NoteProperty -Name "contentVersion" -Value `
                 "1.0.0.0"
+            
+            # Evaluate each property of the CSV line item
             $params = @{}
             $item.PsObject.Properties | ForEach-Object {            
                 $name = $_.Name
@@ -76,14 +81,20 @@ function ConvertTo-AzureRmParametersJSON {
                 $params.Add($name,$valueObj)
             }
 
+            # Add "parameters" property to the object
             $newObj | Add-Member -Type NoteProperty -Name "parameters" -Value $params
             
+            # Build output file name
             $fileName = $OutputPrefix + "$count.json"
+
+            # Convert the PowerShell object to JSON and write the output file
             ConvertTo-Json -InputObject $newObj | Out-File $fileName
+            
             $outputFiles += $fileName
             $count++
         }
 
+        # Return data of the script
         $outputFiles
     }
     else {
