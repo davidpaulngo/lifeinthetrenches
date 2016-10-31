@@ -85,6 +85,6 @@ function ConvertTo-AzureRmParametersJSON {
         }
     }
     else {
-        Write-Host "ERROR: Input object/CSV is null"
+        Write-Host "ERROR: Input CSV is null" -ForegroundColor Red
     }
 } 
