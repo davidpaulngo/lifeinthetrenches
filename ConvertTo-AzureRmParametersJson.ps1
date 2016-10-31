@@ -48,7 +48,7 @@ function ConvertTo-AzureRmParametersJSON {
         [Parameter(ParameterSetName="CSVFile")]
         [string] $OutputPrefix = "item-"
     )
-
+    
     if($PSCmdlet.ParameterSetName -eq "CSVFile") {
         $sourceObj = Import-Csv $CSVFile
     }
@@ -83,6 +83,8 @@ function ConvertTo-AzureRmParametersJSON {
             $outputFiles += $fileName
             $count++
         }
+
+        $outputFiles
     }
     else {
         Write-Host "ERROR: Input CSV is null" -ForegroundColor Red
