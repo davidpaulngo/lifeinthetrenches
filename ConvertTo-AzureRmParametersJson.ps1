@@ -40,6 +40,12 @@
 
         This example shows the usage of the function with a CSV file as input while also 
         configuring the prefix of output files.
+    
+    .EXAMPLE
+        ConvertTo-AzureRmParametersJSON -CSVFile .\TestFile.csv -OutputPrefix "OutputFile" -MergeOutput $true
+
+        This example shows the usage of the function with a CSV file as input while also 
+        merging the output to a single file and specifying the file name.
 
     .LINK
         AzureRM Template Authoring: https://azure.microsoft.com/en-us/documentation/articles/resource-group-authoring-templates/
