@@ -8,10 +8,12 @@ function Export-FolderPermissionCSV {
 		[ValidateScript({Test-Path $_})]
 		[string] $FolderPath = ".\",
 
+		[ValidateScript({Test-Path $_})]
+		[string] $OutputFile = ".\Permissions.csv", 
+
 		[bool] $Recurse = $false,
 
-		[ValidateScript({Test-Path $_})]
-		[string] $OutputFile = ".\Permissions.csv"
+		[bool] $IncludeInheritedRights = $false
 	)
 
 	$accessMask = [ordered] @{
@@ -78,8 +80,7 @@ function Export-FolderPermissionCSV {
 
 		Write-Host "Start Processing list of all acl"
 		$report | % {
-			if($_.Folder -ne $Null -and $_.IsInherited -ne "TRUE")
-			#if($_.Folder -ne $Null)
+			if($_.Folder -ne $Null -and ($_.IsInherited -ne "TRUE" -or $IncludeInheritedRights))
 			{
 				$folder = $_.Folder
 				Write-Host "Adding" $folder
