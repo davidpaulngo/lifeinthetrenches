@@ -150,7 +150,7 @@ function Export-FolderPermissionCSV {
 		
 			$FileSystemRightsValue = $FileSystemRights.value__
 			
-			# Convert FileSystemRights to readable text
+			# Convert FileSystemRights to readable text starting with the simple permissions.
 			$permissions = @()
 			$permissions += $simplePermissions.Keys | ForEach-Object {
 				if (($FileSystemRightsValue -band $_) -eq $_) {
@@ -159,6 +159,7 @@ function Export-FolderPermissionCSV {
 				}
 			}
 
+			# Go through the remaining extended permissions.
 			$permissions += $accessMask.Keys | Where-Object { $FileSystemRightsValue -band $_ } `
 				| ForEach-Object { $accessMask[$_] }
 
