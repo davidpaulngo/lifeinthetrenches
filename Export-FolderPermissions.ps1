@@ -109,7 +109,7 @@ function Export-FolderPermissionCSV {
 	$file = @()
 	
 	# Retrieve permissions of the FolderPath
-	$curDir = Get-Item $folder
+	$curDir = Get-Item $FolderPath
 	$acl = $curDir | Get-Acl -Exclude *.*
 
 	# Add the folder path attribute to each of the ACL entries
